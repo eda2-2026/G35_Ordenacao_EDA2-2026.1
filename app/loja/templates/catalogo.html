@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+   <link rel="stylesheet" href="{% static 'css/catalogo.css' %}">
+{% endblock %}
+
+{% block content %}
+<header>
+   <h1>Bem-vindo ao Catálogo de Bolos</h1>
+   <div class="search-container">
+       <div class="search-box">
+           <input type="text" id="search" placeholder="Buscar por bolo...">
+           <button id="search-icon" class="search-icon" aria-label="Buscar">🔍</button>
+       </div>
+        <label for="sort-select" class="sort-label">Ordenar por</label>
+        <select id="sort-select" onchange="window.catalogSortChanged && window.catalogSortChanged(this.value)">
+            <option value="relevancia">Relevância</option>
+            <option value="az">Ordem Alfabética (A-Z)</option>
+            <option value="za">Ordem Alfabética (Z-A)</option>
+            <option value="menor_preco">Menor Preço</option>
+            <option value="maior_preco">Maior Preço</option>
+        </select>
+       <span id="sort-indicator" class="sort-indicator"></span>
+   </div>
+</header>
+
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<div class="container">
+   <div id="catalogo">
+        <section class="categoria">
+            <div id="react-catalog-root">
+                {# Fallback server-side rendering caso o JS não carregue ou a API falhe #}
+                <div class="card-container">
+                    {% if bolos %}
+                        {% for bolo in bolos %}
+                                                <div class="card">
+                                                        <img src="{{ bolo.imagem_url }}" alt="{{ bolo.sabor }}">
+                                                        <div class="card-body">
+                                                            <h3>{{ bolo.sabor }}</h3>
+                                                            {# Mostrar o tamanho padrão salvo no banco e o preço correspondente #}
+                                                            <p class="tamanho">Tamanho: {{ bolo.get_tamanho_display|default:bolo.tamanho_padrao }}</p>
+                                                            <p class="preco">R$ <span class="preco-dinamico">{% if bolo.tamanho_padrao == 'M' %}{{ bolo.preco_medio }}{% elif bolo.tamanho_padrao == 'G' %}{{ bolo.preco_grande }}{% else %}{{ bolo.preco_pequeno }}{% endif %}</span></p>
+                                                        </div>
+                                                        <button class="botao-comprar" data-product-id="{{ bolo.id }}" data-product="{{ bolo.sabor }}" data-size="{{ bolo.tamanho_padrao }}" data-price="{% if bolo.tamanho_padrao == 'M' %}{{ bolo.preco_medio }}{% elif bolo.tamanho_padrao == 'G' %}{{ bolo.preco_grande }}{% else %}{{ bolo.preco_pequeno }}{% endif %}">Comprar</button>
+                                                </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="vazio">
+                            <p>Nenhum produto disponível no catálogo.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+   </div>
+
+   <aside id="carrinho" class="carrinho">
+       <h2>Carrinho de Compras</h2>
+       <div id="carrinho-itens"></div>
+       <p>Total: <span id="total">R$ 0,00</span></p>
+    <a href="{% url 'basket' %}" id="visualizar-carrinho" class="botao-comprar visualizar-carrinho">Visualizar Carrinho</a>
+   </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="{% static 'js/catalogo_react.js' %}"></script>
+    <script src="{% static 'js/catalogo.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
+{% endblock %}

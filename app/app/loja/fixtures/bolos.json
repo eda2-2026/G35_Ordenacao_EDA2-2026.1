@@ -1,0 +1,218 @@
+[
+{
+  "model": "loja.bolo",
+  "pk": 1,
+  "fields": {
+    "sabor": "Bolo de Fubá",
+    "descricao": "Bolo tradicional de fubá, macio e saboroso.",
+    "imagem_url": "https://static.itdg.com.br/images/640-400/6e568c96326ae47d7a75bf9d2e96bb60/bolo-de-fuba-simples.jpg",
+    "preco_pequeno": "18.00",
+    "preco_medio": "28.00",
+    "preco_grande": "38.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 2,
+  "fields": {
+    "sabor": "Bolo de Ninho com Morango",
+    "descricao": "Um sabor bastante amado e super fofinho! Recheado de leitinho e um delicioso preparado de morango, finalizado com granulados macios de chocolate branco de verdade!",
+    "imagem_url": "https://suavesabor.com.br/wp-content/uploads/2023/12/Design-sem-nome-2023-12-05T120202.165.webp",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 3,
+  "fields": {
+    "sabor": "Bolo de Cenoura",
+    "descricao": "Um super clássico da Casa de Bolos. Um delicioso bolo natural feito com cenoura de verdade e muito amado pela criançada.",
+    "imagem_url": "https://recipesblob.oetker.com.br/assets/11ed1b54a18b427ea8e7f7d141f0a34d/1272x764/bolo_cenoura_horizontal.webp",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 4,
+  "fields": {
+    "sabor": "Bolo de Chocolate",
+    "descricao": "Um bolos mais amados por todos. Feito com chocolate de verdade. Fofinho e delicioso.",
+    "imagem_url": "https://bakeandcakegourmet.com.br/uploads/site/receitas/bolo-de-chocolate-fofinho-e-recheado-com-ganache-oh4s98nh.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 5,
+  "fields": {
+    "sabor": "Bolo de Chocolate com Morango",
+    "descricao": "Um bolo de chocolate super fofinho com recheio e cobertura de morango e ganache de chocolate. Uma combinação simplesmente perfeita!",
+    "imagem_url": "https://guiadacozinha.com.br/wp-content/uploads/2019/10/bolo-trufado-com-morango-29336.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 6,
+  "fields": {
+    "sabor": "Bolo de  Coco",
+    "descricao": "Bolo de Coco bem molhadinho. Uma receita da fazenda que vai de remeter à infância.",
+    "imagem_url": "https://dinorma.com.br/wp-content/uploads/2019/12/Bolo-coco-02-1.png",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 7,
+  "fields": {
+    "sabor": "Bolo de Limão",
+    "descricao": "Um bolo refrescante com uma massa super fofinha. Feito com a própria fruta.",
+    "imagem_url": "https://comidinhasdochef.com/wp-content/uploads/2018/12/Bolo-Lim%C3%A3o-Fofinho.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 8,
+  "fields": {
+    "sabor": "Bolo de abacaxi",
+    "descricao": "Uma Delícia Tropical para Seu Paladar  \r\nO Bolo de Abacaxi é uma opção irresistível para quem busca um doce que combina sabor e frescor. Feito com ingredientes selecionados, este bolo traz a suculência do abacaxi, proporcionando uma experiência única a cada garfada. Ideal para acompanhar um café da tarde ou para adoçar momentos especiais, ele é perfeito para qualquer ocasião.",
+    "imagem_url": "https://static1.minhavida.com.br/recipes/f8/7e/08/05/bolo-de-abacaxi-fit-amp_hero-1.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 9,
+  "fields": {
+    "sabor": "Bolo de Milho",
+    "descricao": "Um dos bolos mais tradicionais da casa. Uma massa bem cremosa com o gostinho especial do puro milho.",
+    "imagem_url": "https://static.itdg.com.br/images/640-400/34117654fc8c1b0b2fff7874a9c458bf/shutterstock-1760209226-1-.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 10,
+  "fields": {
+    "sabor": "Bolo de Banana",
+    "descricao": "Uma receita tradicional da Casa de Bolos. O delicioso sabor da banana em uma massa fofinha com um leve toque de canela.",
+    "imagem_url": "https://receitadaboa.com.br/wp-content/uploads/2024/09/iStock-1293732074.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 11,
+  "fields": {
+    "sabor": "Bolo de Doce de Leite com Ameixa",
+    "descricao": "Bolo branco recheado com doce de leite, ameixas, cocada mole e creme Delicious.",
+    "imagem_url": "https://cknj.com.br/teste/wp-content/uploads/2020/09/bolo-doce-de-leite-ameixa-02-1200x675.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 12,
+  "fields": {
+    "sabor": "Bolo Red Velvet",
+    "descricao": "A sua textura macia e aveludada derrete na boca, enquanto a sua cor vibrante e intensa atrai os olhares e desperta a curiosidade. Cada camada deste bolo é um convite para uma experiência única e inesquecível, com o seu sabor suave e envolvente que se mistura perfeitamente com o delicado recheio de cream cheese. O seu aroma é uma mistura de baunilha e chocolate, que traz uma sensação de conforto e aconchego. Este bolo é uma verdadeira obra-prima da confeitaria, capaz de emocionar e surpreender a todos que o experimentam.",
+    "imagem_url": "https://www.receitasnestle.com.br/sites/default/files/srh_recipes/4f012df686c9759da04453742d8f3360.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 13,
+  "fields": {
+    "sabor": "Bolo de Nozes com Baba de Moça",
+    "descricao": "Bolo de massa branca, recheio de Baba de Moça e doce de leite com nozes, cobertura de mousse branca, nozes.",
+    "imagem_url": "https://cozinhalegal.com.br/wp-content/uploads/2024/09/Bolos-Nozes-Baba-Moca-Facil.jpeg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 14,
+  "fields": {
+    "sabor": "Bolo de Frutas Vermelhas",
+    "descricao": "Este Naked Cake de Brigadeiro e Frutas Vermelhas promete ser a sensação das suas festas! Veja como fazer esta receita e encante a todos com o sabor.",
+    "imagem_url": "https://docepedia.com/_next/image?url=https%3A%2F%2Fadmin.docepedia.com%2Fsite%2Fuploads%2F2022%2F11%2FNaked-Cake-p-768x768-1.jpg&w=1080&q=75",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 15,
+  "fields": {
+    "sabor": "Bolo de Pistache",
+    "descricao": "Bolo de massa branca, recheios de trufado e aerado de pistache, cobertura de trufado de pistache e pistache granulado.",
+    "imagem_url": "https://dafeiraaobaile.com.br/wp-content/uploads/2023/02/Dafeiraaobaile-Novembro-19.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 16,
+  "fields": {
+    "sabor": "Bolo de Pêssego",
+    "descricao": "Bolo de m.assa branca, recheios de creme gelado e mousse branca com pêssego, cobertura de mousse branca, pêssego",
+    "imagem_url": "https://guiadacozinha.com.br/wp-content/uploads/2019/10/bolo-de-pessego-11260.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 17,
+  "fields": {
+    "sabor": "Bolo com Gotas de Chocolate",
+    "descricao": "Macio e saboroso bolo de massa branca com gotas sabor chocolate.",
+    "imagem_url": "https://docepedia.com/_next/image?url=https%3A%2F%2Fadmin.docepedia.com%2Fsite%2Fuploads%2F2021%2F07%2Fbolo-gotas-chocolate_d-768x768-1.jpg&w=1080&q=75",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+},
+{
+  "model": "loja.bolo",
+  "pk": 18,
+  "fields": {
+    "sabor": "Bolo de Churros",
+    "descricao": "Um bolo especial recheado e com cobertura de doce de leite. Com uma massa leve com aquela casquinha crocante. Para os apaixonados por churros!",
+    "imagem_url": "https://swiftbr.vteximg.com.br/arquivos/bolo-canela-churros-doce-leite.jpg",
+    "preco_pequeno": "15.00",
+    "preco_medio": "25.00",
+    "preco_grande": "35.00"
+  }
+}
+]

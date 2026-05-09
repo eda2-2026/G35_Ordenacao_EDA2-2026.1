@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% csrf_token %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/basket.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="items">
+        <h1 class="items-title">Carrinho de Compras</h1>
+
+        <h2>Itens Selecionados</h2>
+
+        <div class="item-header">
+            <span>Imagem</span>
+            <span>Bolo</span>
+            <span>Descrição</span>
+            <span>Quantidade</span>
+            <span>Tamanho</span>
+            <span>Preço</span>
+        </div>
+
+        <div id="carrinho-itens"></div>
+        <div class="summary">
+            <h2>Resumo do Pedido</h2>
+            <div class="summary-item">
+                <span class="item-name">Total de Itens:</span>
+                <span class="item-value" id="total-itens">0</span>
+            </div>
+
+            <div class="summary-item">
+                <span class="item-name total">Total:</span>
+                <span class="item-value total" id="total">R$ 0,00</span>
+            </div>
+            <button id="finalizar-compra" class="checkout-btn">Finalizar Pedido</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/basket.js' %}"></script>
+{% endblock %}

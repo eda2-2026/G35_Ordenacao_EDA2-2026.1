@@ -1,0 +1,433 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Quicksand:wght@300..700&display=swap");
+
+:root {
+  --primary-color: #d19411;
+  --secondary-color: #e670b3; /* títulos agora rosa */
+  --bg-color: #fff7f3;
+  --text-color: #333;
+  --button-bg: #e670b3; /* botões agora rosa */
+  --button-hover-bg: #cf5fa0; /* hover ligeiramente mais escuro */
+  --input-border: #e2e2e2;
+  position: relative;
+  z-index: 30;
+}
+
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Quicksand", sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  background: linear-gradient(145deg, #f2f2f2 0%, #eaeaea 76%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  color: var(--text-color);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 50px;
+  width: 100%;
+}
+
+h1 {
+  font-family: "Dancing Script", cursive;
+  font-size: clamp(2.5rem, 4vw, 6rem);
+  font-weight: 700;
+  color: var(--secondary-color);
+  line-height: 1.1;
+  margin-bottom: 36px;
+  padding-left: 10px;
+}
+
+nav {
+  margin-top: 10px;
+}
+
+.categoria-btn {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.categoria-btn:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+#search {
+  border: 1px solid var(--input-border);
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 1.2rem;
+  width: 400px;
+  margin-right: 10px;
+}
+
+#search-btn {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 0;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+#search-btn:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.container {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.sidebar {
+  width: 15%;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+.sidebar h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.sidebar h3 {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+.categoria-lista h3 {
+  margin-top: 15px;
+  font-size: 1.2rem;
+}
+
+.categoria-lista ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.categoria-lista li {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+.categoria-lista input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+.categoria-lista label {
+  font-size: 1em;
+  color: #333;
+}
+
+.catalogo {
+}
+
+#catalogo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* permite que o conteúdo ocupe 100% da largura disponível */
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Três colunas por linha com minmax para melhor encaixe */
+  gap: 16px; /* Espaço entre os cards */
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.card-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--input-border);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  min-height: 300px;
+  min-width: 160px;
+  padding: 15px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.card img {
+  width: 100%;
+  height: 140px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  margin: 10px 0;
+}
+
+.card .descricao {
+  font-size: 0.7rem;
+  margin-bottom: 10px;
+}
+
+.card .preco {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.card .tamanho {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.card select {
+  width: 75%;
+  min-width: 180px;
+  max-width: 300px;
+  padding: 12px 14px;
+  border: 1px solid var(--input-border);
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1rem;
+  height: 46px;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.card .botao-comprar {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 0;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.card .botao-comprar:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.carrinho {
+  width: 18%;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-left: 20px;
+}
+
+.carrinho h2 {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+  margin-bottom: 20px;
+}
+
+.carrinho-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid var(--input-border);
+}
+
+.carrinho-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.carrinho-item p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.carrinho-item .quantidade {
+  font-size: 0.9rem;
+  color: var(--primary-color);
+}
+
+.remover-item {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  height: 30px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.remover-item:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.total {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+#finalizar-compra {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  padding: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+#finalizar-compra:hover {
+  background-color: var(--button-hover-bg);
+}
+
+/* Estiliza o link de visualizar carrinho na sidebar como um botão */
+.carrinho .botao-comprar,
+.carrinho .visualizar-carrinho {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 0;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.carrinho .botao-comprar:hover,
+.carrinho .visualizar-carrinho:hover {
+  background-color: var(--button-hover-bg);
+}
+
+/* Mensagem exibida quando não há bolos no catálogo */
+.vazio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  width: 100%;
+  color: #666;
+  font-size: 1.1rem;
+  background: transparent;
+}
+
+.vazio p {
+  background: rgba(255,255,255,0.9);
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* Link sem estilo usado no botão de visualizar carrinho */
+.no-style-link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* Responsividade: 2 colunas em telas médias, 1 coluna em telas pequenas */
+@media (max-width: 900px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .carrinho {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 20px;
+  }
+
+  .card-container {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1>La Dolce Cakes</h1>
+    <p>
+        Bem-vindo à La Dolce Cakes! Em nossa loja, cada fatia é uma jornada ao mundo requintado dos bolos finamente elaborados. 
+      Nossa missão é oferecer a você uma explosão de sabores irresistíveis que vão encantar
+      seu paladar e transformar suas celebrações em momentos inesquecíveis. 
+      Localizada no coração da cidade, nossa loja de bolos é o refúgio perfeito para quem valoriza a arte de saborear e celebrar a vida com os melhores sabores.
+    </p>
+    <a href="{% url 'catalogo' %}" class="btn">Saiba Mais</a>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <img
+        src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/a36d2695-58f8-4644-9e19-71988334e345"
+        alt="" />
+    </div>
+    <div class="card">
+      <img
+        src="{% static 'images/bolo1.jpeg' %}"
+        alt="" />
+    </div>
+    <div class="card">
+      <img
+        src="{% static 'images/bolo2.png' %}"
+        alt="" />
+    </div>
+    <div class="card">
+      <img
+        src="{% static 'images/bolo3.png' %}"
+        alt="" />
+    </div>
+    <div class="card">
+      <img
+        src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/7feb903b-33f7-4326-90eb-a4f54c86c68e"
+        alt="" />
+    </div>
+    <div class="card">
+      <img
+        src="{% static 'images/bolo4.jpeg' %}"
+        alt="" />
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/home.js' %}"></script>
+{% endblock %}

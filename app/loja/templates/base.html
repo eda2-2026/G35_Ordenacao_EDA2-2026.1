@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Dolce Cakes</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/bolo1.jpeg' %}" />
+    <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<header class="header-outer">
+    <div class="header-inner responsive-wrapper">
+        <div class="header-logo">
+            <svg width="80px" height="80px" viewBox="0 0 64 64" data-name="Lovely Valentine's day" id="Lovely_Valentine_s_day" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:#e29e9a;}.cls-2{fill:#f6e3a6;}.cls-3{fill:#623905;}.cls-4{fill:#d26274;}.cls-5{fill:#842835;}</style></defs><title/><circle class="cls-1" cx="32" cy="32" r="28"/><path class="cls-2" d="M27.081,14.609a2.569,2.569,0,0,0,.766,1.844L29.692,18.3l1.9,1.9a1.3,1.3,0,0,0,1.846,0l1.9-1.9,1.743-1.744a2.708,2.708,0,0,0,.387-3.454,2.612,2.612,0,0,0-3.975-.336l-.975.974-.861-.861a2.737,2.737,0,0,0-3.3-.5A2.573,2.573,0,0,0,27.081,14.609Z"/><path class="cls-3" d="M32.512,21.583a2.287,2.287,0,0,1-1.632-.677L27.14,17.16a3.6,3.6,0,0,1,.7-5.642,3.708,3.708,0,0,1,4.519.652l.155.154.267-.267a3.611,3.611,0,0,1,5.494.459,3.718,3.718,0,0,1-.491,4.746l-3.638,3.644A2.288,2.288,0,0,1,32.512,21.583Zm-2.875-8.556a1.509,1.509,0,0,0-.773.206,1.6,1.6,0,0,0-.316,2.507L32.3,19.494a.266.266,0,0,0,.431,0l3.64-3.646a1.7,1.7,0,0,0,.282-2.164,1.607,1.607,0,0,0-1.187-.679,1.632,1.632,0,0,0-1.27.466l-.974.974a1,1,0,0,1-1.414,0l-.862-.861A1.869,1.869,0,0,0,29.637,13.027Z"/><path class="cls-4" d="M51,40V50.9A1.167,1.167,0,0,1,49.771,52H14.229A1.167,1.167,0,0,1,13,50.9V40a.311.311,0,0,1,.011-.1A8.2,8.2,0,0,0,18.588,42a8.018,8.018,0,0,0,6.706-3.4,8.313,8.313,0,0,0,13.412,0A8.018,8.018,0,0,0,45.412,42a8.2,8.2,0,0,0,5.577-2.1A.311.311,0,0,1,51,40Z"/><path class="cls-3" d="M49.771,53H14.229A2.169,2.169,0,0,1,12,50.9V40a1.256,1.256,0,0,1,.072-.444,1,1,0,0,1,1.616-.391A7.175,7.175,0,0,0,18.588,41a7.071,7.071,0,0,0,5.875-2.956,1.038,1.038,0,0,1,1.662,0,7.316,7.316,0,0,0,11.75,0,1.038,1.038,0,0,1,1.662,0A7.071,7.071,0,0,0,45.412,41a7.175,7.175,0,0,0,4.9-1.835,1,1,0,0,1,1.616.391A1.256,1.256,0,0,1,52,40V50.9A2.169,2.169,0,0,1,49.771,53ZM14,41.839V50.9a.251.251,0,0,0,.229.1H49.771A.251.251,0,0,0,50,50.9V41.839A9.423,9.423,0,0,1,45.412,43a9.131,9.131,0,0,1-6.706-2.8,9.435,9.435,0,0,1-13.412,0A9.131,9.131,0,0,1,18.588,43,9.423,9.423,0,0,1,14,41.839Z"/><path class="cls-1" d="M15,48.02V45.929a2.186,2.186,0,0,1,2.522-1.961q.435.031.878.032a11.217,11.217,0,0,0,5.518-1.439,2.614,2.614,0,0,1,2.564,0,11.3,11.3,0,0,0,11.036,0,2.614,2.614,0,0,1,2.564,0A11.217,11.217,0,0,0,45.6,44q.443,0,.878-.032A2.186,2.186,0,0,1,49,45.929V48.02A2.124,2.124,0,0,1,46.756,50H17.244A2.124,2.124,0,0,1,15,48.02Z"/><path class="cls-3" d="M27,36H25a1,1,0,0,1,0-2h2a1,1,0,0,1,0,2Z"/><path class="cls-3" d="M27,36H25a1,1,0,0,1,0-2h2a1,1,0,0,1,0,2Z"/><path class="cls-4" d="M45,25.824v8.335a.839.839,0,0,1-.841.841H19.841A.839.839,0,0,1,19,34.159V25.824a.253.253,0,0,1,.008-.077,5.343,5.343,0,0,0,8.4-.994,5.348,5.348,0,0,0,9.176,0,5.343,5.343,0,0,0,8.4.994A.253.253,0,0,1,45,25.824Z"/></svg>
+
+        </div>
+        <nav class="header-navigation">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'catalogo' %}">Catálogo</a>
+            <a id="user-icon" style="text-decoration: none; cursor: pointer;">
+                <lord-icon
+                    src="https://cdn.lordicon.com/bhfjfgqz.json"
+                    trigger="hover"
+                    colors="primary:#121331"
+                    state="hover"
+                    style="width:40px;height:40px">
+                </lord-icon>
+            </a>
+            <div id="user-popup" class="popup hidden" data-is-superuser="{{ user.is_superuser }}">
+                <p>Olá, {{ user.username }}</p>
+                <a id="edit-profile-link" href="#">Perfil</a><br>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+            <a href="{% url 'basket' %}">
+                <lord-icon
+                    src="https://cdn.lordicon.com/odavpkmb.json"
+                    trigger="hover"
+                    stroke="bold"
+                    colors="primary:#121331,secondary:#000000"
+                    style="width:40px;height:40px">
+                </lord-icon>
+            </a>
+        </nav>
+    </div>
+</header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>©2024, La Dolce Cakes.</p>
+    </footer>
+    <script src="{% static 'js/base.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
