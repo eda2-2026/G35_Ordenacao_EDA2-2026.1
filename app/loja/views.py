@@ -4,7 +4,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, logout as logout_view, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.http import require_POST, require_GET, require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 from .models import Bolo, Profile, Order, OrderItem, Avaliacao
 from decimal import Decimal
 from django.db import transaction
@@ -13,15 +14,140 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import get_user_model
 from .trie_store import get_trie
+from .filter_engine import filtrar_catalogo
 import json
 from django.db.models import Sum
 from .sort_engine.radix_sort import RadixSort
 from .sort_engine.quick_sort import QuickSort
+from .sort_engine.merge_sort import MergeSort
+from .sort_engine.heap_sort import HeapSort
 
 
 @login_required
 def home(request):
     return render(request, 'home.html')
+
+
+def _parse_catalogo_params(request):
+    params = {k: v for k, v in request.GET.items()}
+    if request.method == 'POST':
+        try:
+            body = request.body.decode('utf-8')
+            if body:
+                payload = json.loads(body)
+                if isinstance(payload, dict):
+                    params.update(payload)
+        except Exception:
+            pass
+    return params
+
+
+def _parse_bool(value):
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return False
+    return str(value).strip().lower() in ('1', 'true', 'yes', 'y', 'on')
+
+
+def _build_catalog_result(params):
+    qs = Bolo.objects.all()
+    from django.db.models import Avg, Count
+    qs = qs.annotate(media_notas=Avg('avaliacoes__nota'), vendas=Sum('orderitem__quantidade'))
+
+    categoria = params.get('categoria') or params.get('categories')
+    tamanho = params.get('tamanho') or params.get('sizes')
+    sabor_q = params.get('sabor') or params.get('sabores')
+    min_avaliacao = params.get('avaliacao') or params.get('min_rating')
+
+    # Converter para lista se for string
+    def to_list(value):
+        if isinstance(value, list):
+            return value
+        if isinstance(value, str):
+            return [c.strip() for c in value.split(',') if c.strip()]
+        return []
+
+    if categoria:
+        mapping = {
+            'bolo': 'Bolos',
+            'bolos': 'Bolos',
+            'docinho': 'Doces',
+            'docinhos': 'Doces',
+            'doce': 'Doces',
+            'doces': 'Doces',
+            'cupcake': 'Cupcakes',
+            'cupcakes': 'Cupcakes',
+            'bolo no pote': 'Bolos no Pote',
+            'bolos no pote': 'Bolos no Pote',
+            'pote': 'Bolos no Pote',
+            'brownie': 'Outros',
+            'outros': 'Outros',
+        }
+        raw = to_list(categoria)
+        mapped = []
+        for r in raw:
+            key = r.strip().lower()
+            if key in mapping:
+                mapped.append(mapping[key])
+            else:
+                mapped.append(r.strip().title())
+        if mapped:
+            qs = qs.filter(categoria__in=mapped)
+
+    if tamanho:
+        sizes = to_list(tamanho)
+        norm = []
+        for s in sizes:
+            s_low = s.lower()
+            if s_low.startswith('p'):
+                norm.append('P')
+            elif s_low.startswith('m'):
+                norm.append('M')
+            elif s_low.startswith('g'):
+                norm.append('G')
+        if norm:
+            qs = qs.filter(tamanho_padrao__in=norm)
+
+    if sabor_q:
+        sabores = to_list(sabor_q)
+        from django.db.models import Q
+        q_sabor = Q()
+        for s in sabores:
+            q_sabor |= Q(sabor__icontains=s)
+        if q_sabor:
+            qs = qs.filter(q_sabor)
+
+    if min_avaliacao:
+        try:
+            mr = float(min_avaliacao)
+            qs = qs.filter(media_notas__gte=mr)
+        except Exception:
+            pass
+
+    resultado = []
+    for b in qs:
+        try:
+            preco_val = b.get_preco_por_tamanho(getattr(b, 'tamanho_padrao', 'P'))
+            if preco_val is None:
+                preco_val = b.preco_pequeno
+            preco = float(preco_val)
+        except Exception:
+            preco = float(b.preco_pequeno)
+
+        resultado.append({
+            'id': b.id,
+            'nome': b.sabor,
+            'categoria': b.categoria,
+            'tamanho': getattr(b, 'tamanho_padrao', 'P'),
+            'preco': preco,
+            'media_notas': float(b.media_notas) if b.media_notas is not None else None,
+            'vendas': int(b.vendas or 0),
+            'imagem_url': b.imagem_url,
+        })
+
+    resultado = filtrar_catalogo(params, resultado)
+    return resultado
 
 
 def login(request):
@@ -70,114 +196,39 @@ def catalogo(request):
     return render(request, 'catalogo.html', {'bolos': bolos})
 
 
+@csrf_exempt
+@require_http_methods(["GET", "POST"])
 def api_catalogo(request):
-    """API que retorna produtos com filtros aplicáveis via query params.
+    """API que retorna produtos com filtros aplicáveis via query params ou JSON POST.
 
-    Aceita query params:
-      - categoria (ex: 'Bolos')
-      - tamanho (ex: 'P', 'M', 'G' ou 'Pequeno')
-      - sabor (string ou CSV)
-      - avaliacao (inteiro mínimo da média de avaliações)
-      - sort (az|za|menor_preco|maior_preco)
+    Aceita query params ou JSON body com:
+      - categoria / categories
+      - tamanho / sizes
+      - sabor / sabores
+      - avaliacao / min_rating
+      - sort (az|za|menor_preco|maior_preco|categoria|top_vendidos)
+      - group_by_categoria
 
     Retorna lista JSON com campos: id, nome, categoria, tamanho, preco, media_notas, vendas, imagem_url
     """
-    qs = Bolo.objects.all()
-    # Anotar média de notas e total de vendas
-    from django.db.models import Avg, Count
-    qs = qs.annotate(media_notas=Avg('avaliacoes__nota'), vendas=Sum('orderitem__quantidade'))
+    params = _parse_catalogo_params(request)
+    sort = str(params.get('sort', '')).lower()
+    group_by_categoria = _parse_bool(params.get('group_by_categoria') or params.get('group_by_category') or params.get('group_categoria'))
 
-    # Aplicar filtros recebidos
-    categoria = request.GET.get('categoria') or request.GET.get('categories')
-    tamanho = request.GET.get('tamanho') or request.GET.get('sizes')
-    sabor_q = request.GET.get('sabor') or request.GET.get('sabores')
-    min_avaliacao = request.GET.get('avaliacao') or request.GET.get('min_rating')
+    resultado = _build_catalog_result(params)
 
-    if categoria:
-        
-        mapping = {
-            'bolo': 'Bolos',
-            'bolos': 'Bolos',
-            'docinho': 'Doces',
-            'docinhos': 'Doces',
-            'doce': 'Doces',
-            'doces': 'Doces',
-            'cupcake': 'Cupcakes',
-            'cupcakes': 'Cupcakes',
-            'bolo no pote': 'Bolos no Pote',
-            'bolos no pote': 'Bolos no Pote',
-            'pote': 'Bolos no Pote',
-            'brownie': 'Outros',
-            'outros': 'Outros',
-        }
-        raw = [c.strip() for c in categoria.split(',') if c.strip()]
-        mapped = []
-        for r in raw:
-            key = r.strip().lower()
-            if key in mapping:
-                mapped.append(mapping[key])
-            else:
-                title = r.strip().title()
-                mapped.append(title)
-
-        qs = qs.filter(categoria__in=mapped)
-
-    if tamanho:
-        sizes = [s.strip() for s in tamanho.split(',') if s.strip()]
-        # normalizar nomes para a sigla quando possível
-        norm = []
-        for s in sizes:
-            s_low = s.lower()
-            if s_low.startswith('p'):
-                norm.append('P')
-            elif s_low.startswith('m'):
-                norm.append('M')
-            elif s_low.startswith('g'):
-                norm.append('G')
-        if norm:
-            qs = qs.filter(tamanho_padrao__in=norm)
-
-    if sabor_q:
-        sabores = [s.strip() for s in sabor_q.split(',') if s.strip()]
-        
-        from django.db.models import Q
-        q_sabor = Q()
-        for s in sabores:
-            q_sabor |= Q(sabor__icontains=s)
-        qs = qs.filter(q_sabor)
-
-    if min_avaliacao:
+    if sort in ('top_vendidos', 'top10_vendas', 'top_10_vendas') or str(params.get('top_n', '')).isdigit():
+        top_n = 10
         try:
-            mr = float(min_avaliacao)
-            qs = qs.filter(media_notas__gte=mr)
+            top_n = int(params.get('top_n', top_n))
         except Exception:
-            pass
-
-    sort = request.GET.get('sort', '').lower()
-
-    resultado = []
-    for b in qs:
-        try:
-            preco_val = b.get_preco_por_tamanho(getattr(b, 'tamanho_padrao', 'P'))
-            if preco_val is None:
-                preco_val = b.preco_pequeno
-            preco = float(preco_val)
-        except Exception:
-            preco = float(b.preco_pequeno)
-
-        resultado.append({
-            'id': b.id,
-            'nome': b.sabor,
-            'categoria': b.categoria,
-            'tamanho': getattr(b, 'tamanho_padrao', 'P'),
-            'preco': preco,
-            'media_notas': float(b.media_notas) if b.media_notas is not None else None,
-            'vendas': int(b.vendas or 0),
-            'imagem_url': b.imagem_url,
-        })
-
-    # Ordenação usando os algoritmos do motor de ordenação 
-    if sort == 'az':
+            top_n = 10
+        resultado = HeapSort().top_n(resultado, 'vendas', n=top_n)
+    elif group_by_categoria or sort == 'categoria':
+        if group_by_categoria and sort in ('menor_preco', 'maior_preco'):
+            resultado = RadixSort().ordenar(resultado, 'preco', reverse=(sort == 'maior_preco'))
+        resultado = MergeSort().ordenar(resultado, 'categoria')
+    elif sort == 'az':
         resultado = QuickSort().ordenar(resultado, 'nome')
     elif sort == 'za':
         resultado = QuickSort().ordenar(resultado, 'nome', reverse=True)
@@ -186,9 +237,23 @@ def api_catalogo(request):
     elif sort == 'maior_preco':
         resultado = RadixSort().ordenar(resultado, 'preco', reverse=True)
     else:
-        # relevância: por vendas desc, depois media_notas desc
         resultado.sort(key=lambda x: (x.get('vendas', 0) or 0, x.get('media_notas', 0) or 0), reverse=True)
 
+    return JsonResponse(resultado, safe=False)
+
+
+@csrf_exempt
+@require_http_methods(["GET", "POST"])
+def api_top_vendidos(request):
+    params = _parse_catalogo_params(request)
+    resultado = _build_catalog_result(params)
+    top_n = 10
+    try:
+        top_n = int(params.get('top_n', 10))
+    except Exception:
+        top_n = 10
+
+    resultado = HeapSort().top_n(resultado, 'vendas', n=top_n)
     return JsonResponse(resultado, safe=False)
 
 

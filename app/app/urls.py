@@ -26,6 +26,7 @@ urlpatterns = [
     path('cadastro/', views.cadastro, name='cadastro'),
     path('catalogo/', views.catalogo, name='catalogo'),
     path('api/catalogo/', views.api_catalogo, name='api_catalogo'),
+    path('api/top_vendidos/', views.api_top_vendidos, name='api_top_vendidos'),
     path('api/avaliacoes/', views.criar_avaliacao, name='criar_avaliacao'),
     path('basket/', views.basket, name='basket'),
     path('adm/', views.admin, name='adm'),

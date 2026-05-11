@@ -36,18 +36,35 @@
     const [activeSort, setActiveSort] = useState('relevancia');
 
     // Busca do catálogo do backend com opção de sort e filtros
-    function fetchCatalog(sort, filters) {
-      const params = new URLSearchParams();
-      if (sort) params.set('sort', sort);
-      if (filters) {
-        if (filters.categories && filters.categories.length) params.set('categories', filters.categories.join(','));
-        if (filters.sizes && filters.sizes.length) params.set('sizes', filters.sizes.join(','));
-        if (filters.sabores && filters.sabores.length) params.set('sabores', filters.sabores.join(','));
-        if (filters.min_rating) params.set('min_rating', String(filters.min_rating));
+    function buildRequestBody(sort, filters) {
+      const payload = {
+        categories: filters.categories,
+        sizes: filters.sizes,
+        sabores: filters.sabores,
+        min_rating: filters.min_rating
+      };
+      if (sort) {
+        payload.sort = sort;
       }
-      const url = '/api/catalogo/' + (params.toString() ? '?' + params.toString() : '');
+      if (sort === 'categoria') {
+        payload.group_by_categoria = true;
+      }
+      return payload;
+    }
+
+    function fetchCatalog(sort, filters) {
+      const body = buildRequestBody(sort, filters);
       setLoading(true);
-      return fetch(url, { credentials: 'same-origin' })
+      const csrf = getCookie('csrftoken');
+      return fetch('/api/catalogo/', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrf ? { 'X-CSRFToken': csrf } : {})
+        },
+        body: JSON.stringify(body)
+      })
         .then(async (r) => {
           if (!r.ok) {
             const text = await r.text();
@@ -78,26 +95,29 @@
     useEffect(() => {
       // Carrega inicialmente com ordenação padrão (relevância)
       const filters = { categories: selectedCategories, sizes: selectedSizes, sabores: selectedSabores, min_rating: selectedRating };
-      fetchCatalog('', filters).then((data) => {
+      fetchCatalog(activeSort, filters).then((data) => {
         setItems(data || []);
         setFiltered(data || []);
       });
+    }, []);
 
-      
-      // acionem a ordenação mesmo que listeners não sejam anexados.
+    useEffect(() => {
       window.catalogSortChanged = function (s) {
-        console.log('[CatalogApp] global catalogSortChanged ->', s);
-        setActiveSort(s || 'relevancia');
+        const normalizedSort = s || 'relevancia';
+        console.log('[CatalogApp] global catalogSortChanged ->', normalizedSort);
+        setActiveSort(normalizedSort);
         const filters = { categories: selectedCategories, sizes: selectedSizes, sabores: selectedSabores, min_rating: selectedRating };
-        fetchCatalog(s, filters).then((data) => {
-          console.log('[CatalogApp] global fetchCatalog returned', { sort: s, length: (data || []).length });
-         
+        fetchCatalog(normalizedSort, filters).then((data) => {
+          console.log('[CatalogApp] global fetchCatalog returned', { sort: normalizedSort, length: (data || []).length });
           setItems(data || []);
           setFiltered(data || []);
-          if (window.__updateSortIndicator) window.__updateSortIndicator(s || 'relevancia');
+          if (window.__updateSortIndicator) window.__updateSortIndicator(normalizedSort);
         });
       };
-    }, []);
+      return () => {
+        window.catalogSortChanged = undefined;
+      };
+    }, [selectedCategories, selectedSizes, selectedSabores, selectedRating]);
 
     function toggleCategory(cat) {
       setSelectedCategories(prev => {
@@ -260,7 +280,8 @@
             sortEl.addEventListener('change', function () {
             const s = sortEl.value || '';
             console.log('[CatalogApp] sort change ->', s);
-            fetchCatalog(s).then((data) => {
+            const filters = { categories: selectedCategories, sizes: selectedSizes, sabores: selectedSabores, min_rating: selectedRating };
+            fetchCatalog(s, filters).then((data) => {
               console.log('[CatalogApp] fetchCatalog returned', { sort: s, length: (data || []).length, sample: (data || [])[0] });
               setItems(data || []);
               // aplica filtro de busca sobre os novos itens diretamente com a lista retornada
@@ -380,7 +401,8 @@
         'az': 'A-Z',
         'za': 'Z-A',
         'menor_preco': 'Menor preço',
-        'maior_preco': 'Maior preço'
+        'maior_preco': 'Maior preço',
+        'categoria': 'Categoria'
       };
       sortIndicator.textContent = mapping[s] || '';
     };
