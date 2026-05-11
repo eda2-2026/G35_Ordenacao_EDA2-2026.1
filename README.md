@@ -25,7 +25,6 @@ A base de dados é alimentada por um Mock (`catalogo.json`) contendo os doces e 
 * **Heap Sort (Vitrine Top 10):**
     * Implementação de um Max-Heap para a página inicial. Em vez de ordenar toda a loja em $O(N \log N)$ para achar os mais vendidos, o Heap é montado com a chave `vendas` e realiza apenas 10 extrações (pops). Complexidade otimizada para vitrines.
 
----
 
 ## Interface e Experiência do Usuário (Front-end)
 
@@ -38,13 +37,13 @@ O Front-end foi desenvolvido com React/Next.js, separando a responsabilidade de 
 
 
 ## Como Rodar o Projeto
-1. Subir os containers:
+Subir os containers:
 
 ``docker-compose up -d --build``
 
 <br>
 
-3. Preparar o banco de dados:
+Preparar o banco de dados:
 
 ``docker-compose exec web python manage.py migrate``
 
@@ -52,14 +51,10 @@ O Front-end foi desenvolvido com React/Next.js, separando a responsabilidade de 
 
 ``docker-compose exec web python manage.py createsuperuser``
 
-<br>
-5. Gerar a árvore de busca (Trie):
-
-``docker-compose exec web python manage.py build_trie``
 
 <br>
-7. Acessar:
-http://localhost:8000
+
+``Acessar: http://localhost:8000``
 
 <br>
 
