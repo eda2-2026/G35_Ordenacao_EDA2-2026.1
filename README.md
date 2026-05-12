@@ -51,12 +51,26 @@ Preparar o banco de dados:
 
 ``docker-compose exec web python manage.py createsuperuser``
 
+<br>
+
+Gerar a árvore de busca (Trie):
+
+``docker-compose exec web python manage.py build_trie``
 
 <br>
 
+ Acessar:
+ 
 ``Acessar: http://localhost:8000``
 
 <br>
+
+
+
+## Vídeo
+
+[Projeto 2 de EDA2 - Algoritmos de Ordenação ](https://www.youtube.com/watch?v=bR8PJPv3X0w)
+
 
 ## Integrantes da Equipe
 
